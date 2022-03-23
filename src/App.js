@@ -1,68 +1,68 @@
 import React from "react";
-import axios from "axios";
+// import axios from "axios";
 import ReactDOM from "react-dom";
+import data from "./songTrack";
 
 function App() {
-  const url =
-    "https://gist.githubusercontent.com/aryapradipta9/e6492383477803b233916e01f36d5465/raw/66942c739d66d3774303f84071696aa865a07077/single-sample.json";
+  //   var form = document.getElementById("form");
+
+  //   form.addEventListener("submit", function (event) {
+  //     var title = document.getElementById("playlist-title").value;
+  //     var desc = document.getElementById("playlist-desc").value;
+  //     const errorElement = document.getElementById("error-messages");
+  //     event.preventDefault();
+
+  //     let messages = [];
+  //     if (title === "" || title == null) {
+  //       messages.push("Please enter playlist title");
+  //     }
+
+  //     if (desc === "" || desc == null) {
+  //       messages.push("Please enter playlist description");
+  //     }
+
+  //     if (messages.length > 0) {
+  //       event.preventDefault();
+  //       errorElement.innerHTML = messages.join(", ");
+  //       alert("Please check your input again");
+
+  //       return;
+  //     }
+  //     document.querySelector("#title-return").innerHTML = title;
+  //     document.querySelector("#desc-return").innerHTML = desc;
+
+  //     alert("Your playlist title and desc have been added!");
+
+  //     event.target.reset();
+  //   });
 
   const handleClick = () => {
-    axios
-      .get(url)
-      .then(function (response) {
-        console.log("API successfully called");
-        // console.log(response.data.album.artists[0].name);
-        const artist = response.data.album.artists[0].name;
-        let song = response.data.album.name;
-        const album = response.data.album.type;
-        const relDate = response.data.album.release_date;
-        const rate = response.data.popularity;
-        const img = response.data.album.images[0].url;
-        console.log(artist);
-        console.log(song);
-        console.log(album);
-        console.log(relDate);
-        console.log(rate);
-        console.log(img);
+    const artist = data.album.artists[0].name;
+    const song = data.album.name;
+    const album = data.album.type;
+    const relDate = data.album.release_date;
+    const rate = data.popularity;
+    const img = data.album.images[0].url;
 
-        let addCard = React.createElement(
-          "div",
-          { className: "card" },
-          React.createElement("img", { src: img }),
-          React.createElement("h3", { className: "card-title" }, song),
-          React.createElement("p", { className: "card-artist" }, artist),
-          React.createElement("h5", { className: "card-album" }, album),
-          React.createElement(
-            "p",
-            { className: "song-desc" },
-            `This song was released in ` +
-              relDate +
-              ` with the popularity rated ` +
-              rate +
-              " accross the US billboard top chart"
-          ),
-          React.createElement("button", { className: "card-button" }, "Select")
-        );
-        ReactDOM.render(addCard, document.getElementById("card-api"));
-
-        // console.log(album);
-        // document.querySelector("#img-api").src = img;
-        // document.querySelector("#card-artist-api").innerHTML = artist;
-        // document.querySelector("#card-title-api").innerHTML = song;
-        // document.querySelector("#card-album-api").innerHTML = album;
-        // document.querySelector("#song-desc-api").innerHTML =
-        //   `This song was released in ` +
-        //   relDate +
-        //   ` with the popularity rated ` +
-        //   rate +
-        //   " accross the US billboard top chart";
-      })
-      .catch(function (error) {
-        const errorMessage = "API gagal dipanggil: ";
-        alert(errorMessage + error);
-        console.log(error);
-      })
-      .then(function () {});
+    let addCard = React.createElement(
+      "div",
+      { className: "card" },
+      React.createElement("img", { src: img }),
+      React.createElement("h3", { className: "card-title" }, song),
+      React.createElement("p", { className: "card-artist" }, artist),
+      React.createElement("h5", { className: "card-album" }, album),
+      React.createElement(
+        "p",
+        { className: "song-desc" },
+        `This song was released in ` +
+          relDate +
+          ` with the popularity rated ` +
+          rate +
+          " accross the US billboard top chart"
+      ),
+      React.createElement("button", { className: "card-button" }, "Select")
+    );
+    ReactDOM.render(addCard, document.getElementById("card-api"));
   };
 
   return (
