@@ -23,6 +23,7 @@ body {
 
 .container {
     margin: 0px 16px 0px 16px;
+    padding: 48px;
 }
 
 .helper {
@@ -41,38 +42,16 @@ form li {
     margin-bottom: 16px;
 }
 
-form ul {
-    margin-left: -40px;
-}
-
-.form input,
-.form textarea {
-    width: 300px;
-    height: 20px;
-    padding: 4px;
-    border: 1px solid lightgrey;
-    border-radius: 5px;
-}
-
-.form button {
-    background-color: green;
-    color: white;
-    padding: 8px 16px 8px 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 10px;
-}
-
 .callapi {
-    background-color: green;
-    color: white;
-    padding: 8px 16px 8px 16px;
+    /* padding: 8px 16px 8px 16px; */
     border-radius: 30px;
+    background-color: transparent;
+    color: black;
     cursor: pointer;
     text-decoration: none;
-    font-size: 10px;
+    font-size: 14px;
     text-align: center;
-    width: 80px;
+    margin-left: 15px;
 }
 
 .card-button {
@@ -91,17 +70,9 @@ form ul {
     bottom: 16px;
 }
 
-.form {
-    border-radius: 5px;
-    padding: 15px;
-}
-
 .playlist-container {
-    padding: 8px;
     min-height: 500px;
-    border: 1px solid lightgreen;
     border-radius: 1%;
-    background-color: #ededed;
 }
 
 .card {
@@ -158,9 +129,4 @@ form ul {
 .card .song-desc {
     font-size: 12px;
     margin-top: -10px;
-}
-
-#error-messages {
-    color: red;
-    font-size: 10px;
 }

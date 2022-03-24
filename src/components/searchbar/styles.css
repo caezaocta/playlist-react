@@ -1,0 +1,13 @@
+input {
+    height: 40px;
+    width: 500px;
+    border-radius: 100px;
+    border: none;
+    padding: 0px 15px 0px 15px;
+    background-color: #efefef;
+}
+
+.search-bar {
+    text-align: center;
+    margin: 50px;
+}

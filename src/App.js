@@ -2,6 +2,10 @@ import React from "react";
 // import axios from "axios";
 import ReactDOM from "react-dom";
 import data from "./songTrack";
+import SearchBar from "./components/searchbar";
+import CreatePlaylist from "./components/createplaylist";
+import CardComponent from "./components/card"
+
 
 function App() {
   //   var form = document.getElementById("form");
@@ -36,6 +40,35 @@ function App() {
   //     event.target.reset();
   //   });
 
+
+
+
+
+  const songData = [
+    {
+      img: 'https://www.the360mag.com/wp-content/uploads/2019/04/IMG_2513.jpg',
+      title: 'you were good to me',
+      artist: 'Jeremy Zucker, Chelsea Cutler',
+      album: 'brent',
+      desc: 'you were good to me” explores a heart-wrenching break up that left both parties emotionally wrecked.',
+    },
+    {
+      img: 'https://i.scdn.co/image/ab67616d0000b273210933bff4e6e68dc23472b0',
+      title: 'Crying over you',
+      artist: 'Honne',
+      album: 'Love Me / Love Me Not',
+      desc: 'This song is about two people who broke up broke up they say hurtful things to each other.',
+    },
+    {
+      img: 'https://i.scdn.co/image/ab67616d0000b2730a4ae12eb3a9fb7e3815001c',
+      title: 'I Miss Yout',
+      artist: 'Blink 182',
+      album: 'blink-182',
+      desc: 'tells about depression can have on a relationship and its subsequent fallout.',
+    }
+
+  ]
+
   const handleClick = () => {
     const artist = data.album.artists[0].name;
     const song = data.album.name;
@@ -55,117 +88,90 @@ function App() {
         "p",
         { className: "song-desc" },
         `This song was released in ` +
-          relDate +
-          ` with the popularity rated ` +
-          rate +
-          " accross the US billboard top chart"
+        relDate +
+        ` with the popularity rated ` +
+        rate +
+        " accross the US billboard top chart"
       ),
       React.createElement("button", { className: "card-button" }, "Select")
     );
     ReactDOM.render(addCard, document.getElementById("card-api"));
   };
 
+
+
+  const firstData = songData[0];
+  const secondData = songData[1];
+  const thirdData = songData[2];
+
+
+
+
   return (
     <div>
       <div className="container" id="container">
-        <h1 className="page-title">
-          Welcome to <span>GIGIH 2.0</span> Spotify Playlist
-        </h1>
 
-        <form action="" id="form" className="form">
-          <h1 className="sub-title">Create Playlist</h1>
-          <p className="helper">
-            Please add your favorite song to our playlist
-          </p>
-          <ul>
-            <label htmlFor="playlist-title">Playlist title</label>
-            <li>
-              <input
-                id="playlist-title"
-                name="playlist-title"
-                type="text"
-                placeholder="Song title"
-              />
-            </li>
-
-            <label htmlFor="playlist-desc">Playlist description</label>
-            <li>
-              <textarea
-                id="playlist-desc"
-                name="playlist-desc"
-                type="text"
-                placeholder="Write some story behind the song here"
-              ></textarea>
-            </li>
-            <p id="error-messages"></p>
-            <li>
-              <button id="submit" type="submit" value="Create!">
-                Create!
-              </button>
-            </li>
-          </ul>
-        </form>
-
-        <h1 className="sub-title">Songs on This Playlist</h1>
-
-        <a className="callapi" onClick={handleClick}>
-          Call Api
-        </a>
-
-        <h3 className="title-return-style">
-          Playlist title: <span id="title-return"></span>{" "}
+        <h3 className="title-return-style page-title">
+          title: <span id="title-return"></span>{" "}
         </h3>
-        <p className="desc-return-style">
-          Playlist description: <span id="desc-return"></span>{" "}
+        <p className="desc-return-style page-title">
+          description: <span id="desc-return"></span>{" "}
         </p>
 
-        <div className="playlist-container" id="playlist-container">
-          <div className="card">
-            <img
-              src="https://www.the360mag.com/wp-content/uploads/2019/04/IMG_2513.jpg"
-              alt=""
-            />
-            <h3 className="card-title">you were good to me</h3>
-            <p className="card-artist">Jeremy Zucker, Chelsea Cutler</p>
-            <h5 className="card-album">brent</h5>
-            <p className="song-desc">
-              “you were good to me” explores a heart-wrenching break up that
-              left both parties emotionally wrecked.
-            </p>
-            <button className="card-button">Select</button>
-          </div>
-          <div className="card">
-            <img
-              src="https://i1.sndcdn.com/artworks-000496137453-02iti1-t500x500.jpg"
-              alt=""
-            />
-            <h3 className="card-title">Crying Over You</h3>
-            <p className="card-artist">Honne</p>
-            <h5 className="card-album">Love Me / Love Me Not</h5>
-            <p className="song-desc">
-              TThis song is about two people who broke up broke up they say
-              hurtful things to each other.
-            </p>
-            <button className="card-button">Select</button>
-          </div>
 
-          <div className="card">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/id/8/8f/Blink-182_-_Blink-182_cover.jpg"
-              alt=""
-            />
-            <h3 className="card-title">I Miss You</h3>
-            <p className="card-artist">Blink 182</p>
-            <h5 className="card-album">blink-182</h5>
-            <p className="song-desc">
-              tells about depression can have on a relationship and its
-              subsequent fallout.
-            </p>
-            <button onClick={handleClick} className="card-button">
-              Select
-            </button>
-            {/* <button onClick={handleClick}>Call API</button> */}
-          </div>
+
+
+        <SearchBar />
+
+        <CreatePlaylist />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div className="playlist-container" id="playlist-container">
+
+          <h1 className="sub-title">Songs on This Playlist <span><a className="callapi" onClick={handleClick}>
+            Add song
+          </a></span> </h1>
+
+
+
+          <CardComponent
+            img={firstData.img}
+            title={firstData.title}
+            album={firstData.album}
+            artist={firstData.artist}
+            desc={firstData.desc}
+          />
+
+          <CardComponent
+            {...secondData}
+          />
+
+          <CardComponent
+            {...thirdData}
+          />
+
+
+
+
 
           <div id="card-api"></div>
           {/* <div className="card">
