@@ -10,14 +10,19 @@
     text-align: center;
 }
 
+.hint {
+    font-weight: 100;
+    color: lightgrey;
+}
+
 .form input,
 .form textarea {
-    width: 300px;
+    width: 700px;
     height: 20px;
-    padding: 4px;
+    padding: 10px 30px;
     border: 1px solid lightgrey;
-    border-radius: 5px;
-    margin: 0px 0px 20px 0px;
+    border-radius: 30px;
+    margin: 10px 0px 20px 0px;
 }
 
 .form-container {

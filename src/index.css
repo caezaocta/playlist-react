@@ -32,9 +32,15 @@ body {
 }
 
 .sub-title {
-    margin-top: 50px;
+    margin: 50px 0px 20px 0px;
     font-size: 24px;
     color: green;
+    text-align: center;
+}
+
+.helper {
+    text-align: center;
+    margin-bottom: 50px;
 }
 
 form li {
@@ -70,9 +76,15 @@ form li {
     bottom: 16px;
 }
 
+.card-container {
+    display: flex;
+    justify-content: center;
+}
+
 .playlist-container {
     min-height: 500px;
     border-radius: 1%;
+    margin: auto;
 }
 
 .card {

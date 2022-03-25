@@ -22,8 +22,10 @@ const CreatePlaylist = () => {
     <div>
       <div className="return">
         {print ? (
-          <h3 className="title-return-style page-title">{title}</h3>
-        ) : null}
+          <h3 className="title-return-style page-title sub-title">{title}</h3>
+        ) : (
+          <p className="hint">Your playlist title will be written here</p>
+        )}
         {print ? (
           <p className="desc-return-style page-title" id="desc-return">
             {desc}
@@ -37,7 +39,9 @@ const CreatePlaylist = () => {
             Please add your favorite song to our playlist
           </p>
           <ul>
-            <label htmlFor="playlist-title">Playlist title</label>
+            <label htmlFor="playlist-title" className="label">
+              Playlist title
+            </label>
             <li>
               <input
                 id="playlist-title"
@@ -48,7 +52,9 @@ const CreatePlaylist = () => {
               />
             </li>
 
-            <label htmlFor="playlist-desc">Playlist description</label>
+            <label htmlFor="playlist-desc" className="label">
+              Playlist description
+            </label>
             <li>
               <textarea
                 id="playlist-desc"
@@ -66,6 +72,7 @@ const CreatePlaylist = () => {
                 value="Create!"
                 onClick={() => {
                   setPrint(true);
+                  alert("Your playlist has been modified");
                 }}
               >
                 Create!

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from "react";
 // import axios from "axios";
 import ReactDOM from "react-dom";
 import data from "./songTrack";
@@ -6,6 +7,7 @@ import SearchBar from "./components/searchbar";
 import CreatePlaylist from "./components/createplaylist";
 import CardComponent from "./components/card"
 import NavComponent from "./components/navbar"
+import { AiFillAudio } from 'react-icons/ai'
 
 
 function App() {
@@ -68,42 +70,44 @@ function App() {
   const thirdData = songData[2];
 
   return (
+
     <div >
       <NavComponent />
       <div className="container" id="container" >
         <CreatePlaylist
         />
-        <SearchBar />
+
         <div className="playlist-container" id="playlist-container">
 
-          <h1 className="sub-title">Songs on This Playlist <span><a className="callapi" onClick={handleClick}>
+          <h1 className="sub-title">Songs on This Playlist <span><a className="callapi" onClick={handleClick} >
             Add song
           </a></span> </h1>
+          <SearchBar />
+
+
+          <div className="card-container">
+            <CardComponent
+              img={firstData.img}
+              title={firstData.title}
+              album={firstData.album}
+              artist={firstData.artist}
+              desc={firstData.desc}
+            />
+
+            <CardComponent
+              {...secondData}
+            />
+
+            <CardComponent
+              {...thirdData}
+            />
 
 
 
-          <CardComponent
-            img={firstData.img}
-            title={firstData.title}
-            album={firstData.album}
-            artist={firstData.artist}
-            desc={firstData.desc}
-          />
-
-          <CardComponent
-            {...secondData}
-          />
-
-          <CardComponent
-            {...thirdData}
-          />
 
 
-
-
-
-          <div id="card-api"></div>
-          {/* <div className="card">
+            <div id="card-api"></div>
+            {/* <div className="card">
             <img id="img-api" src="" alt="" />
             <h3 className="card-title" id="card-title-api"></h3>
             <p className="card-artist" id="card-artist-api"></p>
@@ -113,6 +117,7 @@ function App() {
               Select
             </button>
           </div> */}
+          </div>
         </div>
       </div>
     </div>
