@@ -1,5 +1,13 @@
-form ul {
+.form ul {
     margin-left: -40px;
+}
+
+.form li {
+    list-style: none;
+}
+
+.return {
+    text-align: center;
 }
 
 .form input,
@@ -9,6 +17,12 @@ form ul {
     padding: 4px;
     border: 1px solid lightgrey;
     border-radius: 5px;
+    margin: 0px 0px 20px 0px;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
 }
 
 .form button {

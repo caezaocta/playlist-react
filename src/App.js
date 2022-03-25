@@ -1,49 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 // import axios from "axios";
 import ReactDOM from "react-dom";
 import data from "./songTrack";
 import SearchBar from "./components/searchbar";
 import CreatePlaylist from "./components/createplaylist";
 import CardComponent from "./components/card"
+import NavComponent from "./components/navbar"
 
 
 function App() {
-  //   var form = document.getElementById("form");
-
-  //   form.addEventListener("submit", function (event) {
-  //     var title = document.getElementById("playlist-title").value;
-  //     var desc = document.getElementById("playlist-desc").value;
-  //     const errorElement = document.getElementById("error-messages");
-  //     event.preventDefault();
-
-  //     let messages = [];
-  //     if (title === "" || title == null) {
-  //       messages.push("Please enter playlist title");
-  //     }
-
-  //     if (desc === "" || desc == null) {
-  //       messages.push("Please enter playlist description");
-  //     }
-
-  //     if (messages.length > 0) {
-  //       event.preventDefault();
-  //       errorElement.innerHTML = messages.join(", ");
-  //       alert("Please check your input again");
-
-  //       return;
-  //     }
-  //     document.querySelector("#title-return").innerHTML = title;
-  //     document.querySelector("#desc-return").innerHTML = desc;
-
-  //     alert("Your playlist title and desc have been added!");
-
-  //     event.target.reset();
-  //   });
-
-
-
-
-
   const songData = [
     {
       img: 'https://www.the360mag.com/wp-content/uploads/2019/04/IMG_2513.jpg',
@@ -98,53 +63,17 @@ function App() {
     ReactDOM.render(addCard, document.getElementById("card-api"));
   };
 
-
-
   const firstData = songData[0];
   const secondData = songData[1];
   const thirdData = songData[2];
 
-
-
-
   return (
-    <div>
-      <div className="container" id="container">
-
-        <h3 className="title-return-style page-title">
-          title: <span id="title-return"></span>{" "}
-        </h3>
-        <p className="desc-return-style page-title">
-          description: <span id="desc-return"></span>{" "}
-        </p>
-
-
-
-
+    <div >
+      <NavComponent />
+      <div className="container" id="container" >
+        <CreatePlaylist
+        />
         <SearchBar />
-
-        <CreatePlaylist />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div className="playlist-container" id="playlist-container">
 
           <h1 className="sub-title">Songs on This Playlist <span><a className="callapi" onClick={handleClick}>
