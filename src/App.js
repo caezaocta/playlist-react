@@ -783,6 +783,7 @@ function App() {
   ];
 
 
+
   // const firstData = songData[0];
   // const secondData = songData[1];
   // const thirdData = songData[2];
@@ -822,10 +823,11 @@ function App() {
               <CardComponent
                 id={queen.id}
                 img={queen.album.images[0].url}
-                title={queen.album.name}
-                album={queen.name}
-                artist={queen.artist}
-                desc={`This song was released in ` + queen.artist}
+                title={queen.name}
+                album={queen.album.name}
+                artist={queen.artists[4]}
+                desc={`This song was released in ` + queen.album.release_date + ` which has ranked of ` + queen.popularity + ` popularity`}
+                button={queen.album.external_urls.spotify}
               />
             ))}
 
