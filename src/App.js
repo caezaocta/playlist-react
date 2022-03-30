@@ -53,33 +53,9 @@ function App() {
         type: 'track'
       }
     })
+    console.log(data.tracks.items)
     setArtists(data.tracks.items);
   }
-
-  // const songData = [
-  //   {
-  //     img: 'https://www.the360mag.com/wp-content/uploads/2019/04/IMG_2513.jpg',
-  //     title: 'you were good to me',
-  //     artist: 'Jeremy Zucker, Chelsea Cutler',
-  //     album: 'brent',
-  //     desc: 'you were good to me” explores a heart-wrenching break up that left both parties emotionally wrecked.',
-  //   },
-  //   {
-  //     img: 'https://i.scdn.co/image/ab67616d0000b273210933bff4e6e68dc23472b0',
-  //     title: 'Crying over you',
-  //     artist: 'Honne',
-  //     album: 'Love Me / Love Me Not',
-  //     desc: 'This song is about two people who broke up broke up they say hurtful things to each other.',
-  //   },
-  //   {
-  //     img: 'https://i.scdn.co/image/ab67616d0000b2730a4ae12eb3a9fb7e3815001c',
-  //     title: 'I Miss Yout',
-  //     artist: 'Blink 182',
-  //     album: 'blink-182',
-  //     desc: 'tells about depression can have on a relationship and its subsequent fallout.',
-  //   }
-
-  // ]
 
   const handleClick = () => {
     const artist = data.album.artists[0].name;
@@ -829,11 +805,22 @@ function App() {
 
   const renderArtists = () => {
     return artists.map((track) =>
-      <div key={track.id}>
-        {/* {track.images.length ? <img src={track.image[0].url} alt="" /> : <div>No Image</div>} */}
-        {track.name}
-
-      </div>
+      <>
+        <CardComponent key={track.id}
+          // id={queen.id}
+          img={track.album.images[0].url}
+          title={track.name}
+          // album={queen.album.name}
+          artist={track.artists[0].name}
+          desc={`This song was released in ` + track.album.release_date + ` which has ranked of ` + track.popularity + ` popularity`}
+          button={track.external_urls.spotify}
+        />
+      </>
+      // <div key={track.id}>
+      //   {/* {track.images.length ? <img src={track.image[0].url} alt="" /> : <div>No Image</div>} */}
+      //   {track.name}
+      //   {track.artists[0].name}
+      // </div>
     )
   }
 
@@ -859,7 +846,7 @@ function App() {
 
       {/* <div>{artists}</div> */}
 
-      {renderArtists()}
+
       {/* <SpotifyLogin /> */}
 
 
@@ -879,8 +866,8 @@ function App() {
             <div id="card-api"></div>
 
 
-
-            {queenSongs.map((queen, index) =>
+            {renderArtists()}
+            {/* {queenSongs.map((queen, index) =>
             (
               <CardComponent
                 id={queen.id}
@@ -891,7 +878,7 @@ function App() {
                 desc={`This song was released in ` + queen.album.release_date + ` which has ranked of ` + queen.popularity + ` popularity`}
                 button={queen.album.external_urls.spotify}
               />
-            ))}
+            ))} */}
 
 
 
