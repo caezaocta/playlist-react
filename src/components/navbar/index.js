@@ -2,13 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 import { FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import SpotifyLogin from "../login";
 
-const Navbar = () => {
+const Navbar = ({ login }) => {
   return (
     <div>
       <nav>
         <h2>GIGIH 2.0 Playlist</h2>
         <ul>
+          <li>
+            {login}
+          </li>
           <li>
             <a href="#" id="logo1">
               <i>
