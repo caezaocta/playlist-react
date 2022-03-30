@@ -10,6 +10,7 @@ import CardComponent from "./components/card"
 // import { AiFillAudio } from 'react-icons/ai'
 import SpotifyLogin from './pages/login'
 import LoginButton from '../src/components/logbutton'
+import './index.css'
 
 
 
@@ -828,21 +829,8 @@ function App() {
   return (
 
     <div >
-      <p>{searchKey}</p>
-      {!token ?
-        <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`} className="login">Login</a>
-        : <a href="#" className="login" onClick={logout}>Logout</a>
-      }
+      {/* <p>{searchKey}</p> */}
 
-      {
-        token ?
-          <form onSubmit={searchArtists}>
-            <input type="text" onChange={e => setSearchKey(e.target.value)} />
-            <button type={"submit"}>go</button>
-          </form>
-          :
-          <h2>Please Login first</h2>
-      }
 
       {/* <div>{artists}</div> */}
 
@@ -851,8 +839,29 @@ function App() {
 
 
       <div className="container" id="container" >
-        <CreatePlaylist
-        />
+
+
+        {!token ?
+          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`} className="login">Login</a>
+          : <a href="#" className="login" onClick={logout}>Logout</a>
+        }
+
+        {
+          token ?
+            <div className="form-search">
+              <form onSubmit={searchArtists}>
+                <input type="text" onChange={e => setSearchKey(e.target.value)} placeholder="Search your favorite song here" />
+                <button type={"submit"}>go</button>
+              </form>
+            </div>
+            :
+            <h2>Please Login first</h2>
+        }
+
+
+
+
+
 
         <div className="playlist-container" id="playlist-container">
 
@@ -883,6 +892,8 @@ function App() {
 
 
           </div>
+          <CreatePlaylist
+          />
         </div>
       </div>
     </div >
