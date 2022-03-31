@@ -6,10 +6,6 @@ import data from "./songTrack";
 // import SearchBar from "./components/searchbar";
 import CreatePlaylist from "./components/createplaylist";
 import CardComponent from "./components/card"
-// import NavComponent from "./components/navbar"
-// import { AiFillAudio } from 'react-icons/ai'
-import SpotifyLogin from './pages/login'
-import LoginButton from '../src/components/logbutton'
 import './index.css'
 
 
@@ -23,6 +19,9 @@ function App() {
   const [token, setToken] = useState("")
   const [searchKey, setSearchKey] = useState("");
   const [artists, setArtists] = useState([]);
+  const [favorites, setFavorite] = useState([]);
+  const [isActive, setIsActive] = useState(false);
+
 
   useEffect(() => {
     const hash = window.location.hash
@@ -804,6 +803,26 @@ function App() {
     },
   ];
 
+  // const handleFavorite = () => {
+  //   return artists.map((track) =>
+  //     <>
+  //       <CardComponent key={track.id}
+  //         // id={queen.id}
+  //         img={track.album.images[0].url}
+  //         title={track.name}
+  //         // album={queen.album.name}
+  //         artist={track.artists[0].name}
+  //         desc={`This song was released in ` + track.album.release_date + ` which has ranked of ` + track.popularity + ` popularity`}
+  //         button={track.external_urls.spotify}
+  //         favorite={handleFavorite}
+  //       />
+  //     </>
+  //   )
+
+
+
+
+
   const renderArtists = () => {
     return artists.map((track) =>
       <>
@@ -815,6 +834,9 @@ function App() {
           artist={track.artists[0].name}
           desc={`This song was released in ` + track.album.release_date + ` which has ranked of ` + track.popularity + ` popularity`}
           button={track.external_urls.spotify}
+          setIsActive={setIsActive}
+          isActive={isActive}
+
         />
       </>
       // <div key={track.id}>
@@ -864,6 +886,7 @@ function App() {
 
 
         <div className="playlist-container" id="playlist-container">
+          {/* <h1 className="sub-title">Your Selected Songs</h1> */}
 
 
           <h1 className="sub-title">Songs on This Playlist <span><a className="callapi" onClick={handleClick} >
@@ -899,6 +922,7 @@ function App() {
     </div >
   );
 }
+
 
 
 export default App;
