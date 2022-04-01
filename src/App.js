@@ -20,8 +20,12 @@ function App() {
   const [searchKey, setSearchKey] = useState("");
   const [artists, setArtists] = useState([]);
   const [favorites, setFavorite] = useState([]);
-  const [isActive, setIsActive] = useState(false);
+  const [select, setSelect] = useState(false);
+  const [selectElement, setSelectElement] = useState(0);
 
+  const handleElement = (id) => {
+    setSelectElement(id)
+  }
 
   useEffect(() => {
     const hash = window.location.hash
@@ -803,6 +807,14 @@ function App() {
     },
   ];
 
+  const handleSelected = () => {
+    // setSelect(select.filter(track => track.id ?))
+    setSelect(!select);
+    // setSelect({
+    //   select: false,
+    // });
+  };
+
   // const handleFavorite = () => {
   //   return artists.map((track) =>
   //     <>
@@ -818,11 +830,6 @@ function App() {
   //       />
   //     </>
   //   )
-
-
-
-
-
   const renderArtists = () => {
     return artists.map((track) =>
       <>
@@ -834,8 +841,12 @@ function App() {
           artist={track.artists[0].name}
           desc={`This song was released in ` + track.album.release_date + ` which has ranked of ` + track.popularity + ` popularity`}
           button={track.external_urls.spotify}
-          setIsActive={setIsActive}
-          isActive={isActive}
+          // setIsActive={setIsActive}
+          // isActive={isActive}
+          status={() => handleElement(track.id)}
+          // status={() => handleClick(track.id)}
+          select={selectElement === track.id ? "Selected" : "Select"}
+          buttonId={track.id}
 
         />
       </>
