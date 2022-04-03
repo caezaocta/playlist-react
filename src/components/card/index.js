@@ -1,19 +1,34 @@
 import React from "react";
 
-const CardComponent = ({ img, title, artist, album, desc, id, button, status, select, buttonId }) => {
+const CardItem = ({ track, id, onClick, getClassName, img, artist, title, isSelected, remove }) => {
   return (
-    <div className="card">
-      <img src={img} alt="" />
-      <h3 className="card-title">{title}</h3>
-      <p className="card-artist">{artist}</p>
-      <h5 className="card-album">{album}</h5>
-      <p className="song-desc">{desc}</p>
-      <a href={button} className="card-button">Play</a>
-      <a id={buttonId} href={'#'} className="card-select" onClick={status}>{select}
-      </a>
-      {/* <button type="submit" onClick={status} className="card-button-favorite">Add to Favorite</button> */}
-    </div >
-  );
-};
+    <div className="row d-flex justify-content-center">
+      <div className={getClassName}
+        style={{ width: "18rem", height: "100px" }}
+        // onClick={() => onClick(track)}
+        onClick={() => onClick(track.id)}
 
-export default CardComponent;
+      // onClick={onClick}
+      >
+        <div className="row d-flex justify-content-between">
+          <div className="col-4">
+            <img src={img} alt="" width={"90px"} height={"90px"} className="" />
+          </div>
+          <div className="col-8">
+            <p>{id}</p>
+            <h3 className="song-title">{title}</h3>
+            <h6 className="song-artist">{artist}</h6>
+            <h6 className="song-artist btn btn-card btn-outline-success">{isSelected}</h6>
+            {/* <h6 className="song-artist btn btn-outline-danger" onClick={remove}>Remove</h6> */}
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  );
+}
+
+export default CardItem;
+

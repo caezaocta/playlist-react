@@ -1,939 +1,162 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
+// import logo from './logo.svg';
+import "./App.css";
+import CardItem from "./components/card";
+import "bootstrap/dist/css/bootstrap.min.css";
+import SearchBar from "./components/searchbar";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ReactDOM from "react-dom";
-import data from "./songTrack";
-// import SearchBar from "./components/searchbar";
-import CreatePlaylist from "./components/createplaylist";
-import CardComponent from "./components/card"
-import './index.css'
-
-
 
 function App() {
-  const CLIENT_ID = "dfc1111bb28e42208f37905662121d74"
-  const REDIRECT_URI = "http://localhost:3000"
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-  const RESPONSE_TYPE = "token"
+  const CLIENT_ID = "dfc1111bb28e42208f37905662121d74";
+  const REDIRECT_URI = "http://localhost:3000";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
 
-  const [token, setToken] = useState("")
+  const [tracks, setTracks] = useState([]);
+  const [token, setToken] = useState("");
   const [searchKey, setSearchKey] = useState("");
-  const [artists, setArtists] = useState([]);
-  const [favorites, setFavorite] = useState([]);
-  const [select, setSelect] = useState(false);
-  const [selectElement, setSelectElement] = useState(0);
-
-  const handleElement = (id) => {
-    setSelectElement(id)
-  }
+  const [selectedTracksId, setSelectedTracksId] = useState([]);
+  // const [uris, setUris] = useState([]);
 
   useEffect(() => {
-    const hash = window.location.hash
-    let token = window.localStorage.getItem("token")
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
 
     if (!token && hash) {
-      token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
+      token = hash
+        .substring(1)
+        .split("&")
+        .find((elem) => elem.startsWith("access_token"))
+        .split("=")[1];
 
-      window.location.hash = ""
-      window.localStorage.setItem("token", token)
-
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
     }
-    setToken(token)
-  }, [])
+    setToken(token);
+  }, []);
 
   const logout = () => {
-    setToken("")
-    window.localStorage.removeItem("token")
-  }
+    setToken("");
+    window.localStorage.removeItem("token");
+  };
 
-  const searchArtists = async (e) => {
-    e.preventDefault()
-    const { data } = await axios.get('https://api.spotify.com/v1/search', {
+  const handleSearchSong = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.get("https://api.spotify.com/v1/search", {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       params: {
         q: searchKey,
-        type: 'track'
-      }
-    })
-    console.log(data.tracks.items)
-    setArtists(data.tracks.items);
+        type: "track",
+      },
+    });
+
+    const newData = data.tracks.items.map((item) => ({
+      ...item,
+      selected: false,
+    }));
+    setTracks(newData);
+  };
+
+  function getClassName(selected) {
+    if (selected) {
+      return "card btn btn-primary card-button mb-5  p-1 card d-flex text-dark";
+    } else {
+      return "card btn btn-outline-primary card-button mb-5 p-1 card d-flex text-dark";
+    }
   }
 
-  const handleClick = () => {
-    const artist = data.album.artists[0].name;
-    const song = data.album.name;
-    const album = data.album.type;
-    const relDate = data.album.release_date;
-    const rate = data.popularity;
-    const img = data.album.images[0].url;
-
-
-    let addCard = React.createElement(
-      "div",
-      { className: "card" },
-      React.createElement("img", { src: img }),
-      React.createElement("h3", { className: "card-title" }, song),
-      React.createElement("p", { className: "card-artist" }, artist),
-      React.createElement("h5", { className: "card-album" }, album),
-      React.createElement(
-        "p",
-        { className: "song-desc" },
-        `This song was released in ` +
-        relDate +
-        ` with the popularity rated ` +
-        rate +
-        " accross the US billboard top chart"
-      ),
-      React.createElement("button", { className: "card-button" }, "Select")
+  function onTrackItemClick(id) {
+    setSelectedTracksId((selectedTracksId) =>
+      selectedTracksId.filter((tracksId) => tracksId === id).length
+        ? selectedTracksId.filter((tracksId) => tracksId !== id)
+        : [...selectedTracksId, id]
     );
-    ReactDOM.render(addCard, document.getElementById("card-api"));
-  };
-
-  const queenSongs = [
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-          },
-          href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-          id: "1dfeR4HaWDbWqFHLkxsg1d",
-          name: "Queen",
-          type: "artist",
-          uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/1GbtB4zTqAsyfZEsm1RZfx",
-        },
-        href: "https://api.spotify.com/v1/albums/1GbtB4zTqAsyfZEsm1RZfx",
-        id: "1GbtB4zTqAsyfZEsm1RZfx",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273e319baafd16e84f0408af2a0",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02e319baafd16e84f0408af2a0",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851e319baafd16e84f0408af2a0",
-          width: 64,
-        },
-        ],
-        name: "A Night At The Opera (2011 Remaster)",
-        release_date: "1975-11-21",
-        release_date_precision: "day",
-        total_tracks: 12,
-        type: "album",
-        uri: "spotify:album:1GbtB4zTqAsyfZEsm1RZfx",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-        },
-        href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-        id: "1dfeR4HaWDbWqFHLkxsg1d",
-        name: "Queen",
-        type: "artist",
-        uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-      },],
-      disc_number: 1,
-      duration_ms: 354320,
-      explicit: false,
-      external_ids: {
-        isrc: "GBUM71029604",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/4u7EnebtmKWzUH433cf5Qv",
-      },
-      href: "https://api.spotify.com/v1/tracks/4u7EnebtmKWzUH433cf5Qv",
-      id: "4u7EnebtmKWzUH433cf5Qv",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody - Remastered 2011",
-      popularity: 82,
-      preview_url: null,
-      track_number: 11,
-      type: "track",
-      uri: "spotify:track:4u7EnebtmKWzUH433cf5Qv",
-    },
-
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-          },
-          href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-          id: "1dfeR4HaWDbWqFHLkxsg1d",
-          name: "Queen",
-          type: "artist",
-          uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/6i6folBtxKV28WX3msQ4FE",
-        },
-        href: "https://api.spotify.com/v1/albums/6i6folBtxKV28WX3msQ4FE",
-        id: "6i6folBtxKV28WX3msQ4FE",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02e8b066f70c206551210d902b",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851e8b066f70c206551210d902b",
-          width: 64,
-        },
-        ],
-        name: "Bohemian Rhapsody (The Original Soundtrack)",
-        release_date: "2018-10-19",
-        release_date_precision: "day",
-        total_tracks: 22,
-        type: "album",
-        uri: "spotify:album:6i6folBtxKV28WX3msQ4FE",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-        },
-        href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-        id: "1dfeR4HaWDbWqFHLkxsg1d",
-        name: "Queen",
-        type: "artist",
-        uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-      },],
-      disc_number: 1,
-      duration_ms: 354947,
-      explicit: false,
-      external_ids: {
-        isrc: "GBUM71029604",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/3z8h0TU7ReDPLIbEnYhWZb",
-      },
-      href: "https://api.spotify.com/v1/tracks/3z8h0TU7ReDPLIbEnYhWZb",
-      id: "3z8h0TU7ReDPLIbEnYhWZb",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody",
-      popularity: 71,
-      preview_url: null,
-      track_number: 7,
-      type: "track",
-      uri: "spotify:track:3z8h0TU7ReDPLIbEnYhWZb",
-    },
-
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1KCSPY1glIKqW2TotWuXOR",
-          },
-          href: "https://api.spotify.com/v1/artists/1KCSPY1glIKqW2TotWuXOR",
-          id: "1KCSPY1glIKqW2TotWuXOR",
-          name: "P!nk",
-          type: "artist",
-          uri: "spotify:artist:1KCSPY1glIKqW2TotWuXOR",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/6GKO2wiPdGjIpSmWlelmft",
-        },
-        href: "https://api.spotify.com/v1/albums/6GKO2wiPdGjIpSmWlelmft",
-        id: "6GKO2wiPdGjIpSmWlelmft",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273c6d39d0bc56e872f55e34406",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02c6d39d0bc56e872f55e34406",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851c6d39d0bc56e872f55e34406",
-          width: 64,
-        },
-        ],
-        name: "All I Know So Far: Setlist",
-        release_date: "2021-05-21",
-        release_date_precision: "day",
-        total_tracks: 16,
-        type: "album",
-        uri: "spotify:album:6GKO2wiPdGjIpSmWlelmft",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1KCSPY1glIKqW2TotWuXOR",
-        },
-        href: "https://api.spotify.com/v1/artists/1KCSPY1glIKqW2TotWuXOR",
-        id: "1KCSPY1glIKqW2TotWuXOR",
-        name: "P!nk",
-        type: "artist",
-        uri: "spotify:artist:1KCSPY1glIKqW2TotWuXOR",
-      },],
-      disc_number: 1,
-      duration_ms: 349746,
-      explicit: false,
-      external_ids: {
-        isrc: "USRC12100846",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/5jnxScfRVyWskdfPGjTF7c",
-      },
-      href: "https://api.spotify.com/v1/tracks/5jnxScfRVyWskdfPGjTF7c",
-      id: "5jnxScfRVyWskdfPGjTF7c",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody - Live",
-      popularity: 30,
-      preview_url: "https://p.scdn.co/mp3-preview/855a367bb0f028749080510f72a1c581af3d4ae3?cid=0beee08e00b947e0aaa2d5cc7f8ffd30",
-      track_number: 14,
-      type: "track",
-      uri: "spotify:track:5jnxScfRVyWskdfPGjTF7c",
-    },
-
-    {
-      album: {
-        album_type: "compilation",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/0LyfQWJT6nXafLPZqxe9Of",
-          },
-          href: "https://api.spotify.com/v1/artists/0LyfQWJT6nXafLPZqxe9Of",
-          id: "0LyfQWJT6nXafLPZqxe9Of",
-          name: "Various Artists",
-          type: "artist",
-          uri: "spotify:artist:0LyfQWJT6nXafLPZqxe9Of",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/5rOHrnrRomvSJhQLGVtfJ8",
-        },
-        href: "https://api.spotify.com/v1/albums/5rOHrnrRomvSJhQLGVtfJ8",
-        id: "5rOHrnrRomvSJhQLGVtfJ8",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273cb4ec52c48a6b071ed2ab6bc",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02cb4ec52c48a6b071ed2ab6bc",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851cb4ec52c48a6b071ed2ab6bc",
-          width: 64,
-        },
-        ],
-        name: "Suicide Squad: The Album",
-        release_date: "2016-08-05",
-        release_date_precision: "day",
-        total_tracks: 14,
-        type: "album",
-        uri: "spotify:album:5rOHrnrRomvSJhQLGVtfJ8",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/20JZFwl6HVl6yg8a4H3ZqK",
-        },
-        href: "https://api.spotify.com/v1/artists/20JZFwl6HVl6yg8a4H3ZqK",
-        id: "20JZFwl6HVl6yg8a4H3ZqK",
-        name: "Panic! At The Disco",
-        type: "artist",
-        uri: "spotify:artist:20JZFwl6HVl6yg8a4H3ZqK",
-      },],
-      disc_number: 1,
-      duration_ms: 363114,
-      explicit: false,
-      external_ids: {
-        isrc: "USAT21602014",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/2YSbHu9XF4bNYWt3MnIhgE",
-      },
-      href: "https://api.spotify.com/v1/tracks/2YSbHu9XF4bNYWt3MnIhgE",
-      id: "2YSbHu9XF4bNYWt3MnIhgE",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody",
-      popularity: 58,
-      preview_url: "https://p.scdn.co/mp3-preview/1f8e6abafd07e2e9dde3cf35ba5827a7f2790533?cid=0beee08e00b947e0aaa2d5cc7f8ffd30",
-      track_number: 11,
-      type: "track",
-      uri: "spotify:track:2YSbHu9XF4bNYWt3MnIhgE",
-    },
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/26AHtbjWKiwYzsoGoUZq53",
-          },
-          href: "https://api.spotify.com/v1/artists/26AHtbjWKiwYzsoGoUZq53",
-          id: "26AHtbjWKiwYzsoGoUZq53",
-          name: "Pentatonix",
-          type: "artist",
-          uri: "spotify:artist:26AHtbjWKiwYzsoGoUZq53",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/00JpoY0ZaQRXTNJUruibfX",
-        },
-        href: "https://api.spotify.com/v1/albums/00JpoY0ZaQRXTNJUruibfX",
-        id: "00JpoY0ZaQRXTNJUruibfX",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b2739729d686606e6be27346da30",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e029729d686606e6be27346da30",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d000048519729d686606e6be27346da30",
-          width: 64,
-        },
-        ],
-        name: "PTX Vol. IV - Classics",
-        release_date: "2017-04-07",
-        release_date_precision: "day",
-        total_tracks: 7,
-        type: "album",
-        uri: "spotify:album:00JpoY0ZaQRXTNJUruibfX",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/26AHtbjWKiwYzsoGoUZq53",
-        },
-        href: "https://api.spotify.com/v1/artists/26AHtbjWKiwYzsoGoUZq53",
-        id: "26AHtbjWKiwYzsoGoUZq53",
-        name: "Pentatonix",
-        type: "artist",
-        uri: "spotify:artist:26AHtbjWKiwYzsoGoUZq53",
-      },],
-      disc_number: 1,
-      duration_ms: 355733,
-      explicit: false,
-      external_ids: {
-        isrc: "USRC11700356",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/0lrkMvRttmoXjMNS8YONvj",
-      },
-      href: "https://api.spotify.com/v1/tracks/0lrkMvRttmoXjMNS8YONvj",
-      id: "0lrkMvRttmoXjMNS8YONvj",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody",
-      popularity: 53,
-      preview_url: "https://p.scdn.co/mp3-preview/48397490dbd47b3315d6b5bd01cbd8d894eda62c?cid=0beee08e00b947e0aaa2d5cc7f8ffd30",
-      track_number: 1,
-      type: "track",
-      uri: "spotify:track:0lrkMvRttmoXjMNS8YONvj",
-    },
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-          },
-          href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-          id: "1dfeR4HaWDbWqFHLkxsg1d",
-          name: "Queen",
-          type: "artist",
-          uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/6i6folBtxKV28WX3msQ4FE",
-        },
-        href: "https://api.spotify.com/v1/albums/6i6folBtxKV28WX3msQ4FE",
-        id: "6i6folBtxKV28WX3msQ4FE",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02e8b066f70c206551210d902b",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851e8b066f70c206551210d902b",
-          width: 64,
-        },
-        ],
-        name: "Bohemian Rhapsody (The Original Soundtrack)",
-        release_date: "2018-10-19",
-        release_date_precision: "day",
-        total_tracks: 22,
-        type: "album",
-        uri: "spotify:album:6i6folBtxKV28WX3msQ4FE",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-        },
-        href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-        id: "1dfeR4HaWDbWqFHLkxsg1d",
-        name: "Queen",
-        type: "artist",
-        uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-      },],
-      disc_number: 1,
-      duration_ms: 295733,
-      explicit: false,
-      external_ids: {
-        isrc: "GBUM71029613",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/5txoZyuAmtCfmDjUCEphWm",
-      },
-      href: "https://api.spotify.com/v1/tracks/5txoZyuAmtCfmDjUCEphWm",
-      id: "5txoZyuAmtCfmDjUCEphWm",
-      is_local: false,
-      is_playable: true,
-      name: "Somebody To Love",
-      popularity: 67,
-      preview_url: null,
-      track_number: 2,
-      type: "track",
-      uri: "spotify:track:5txoZyuAmtCfmDjUCEphWm",
-    },
-    {
-      album: {
-        album_type: "single",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/0iQDOaYEA5i9RAF0Z73iXb",
-          },
-          href: "https://api.spotify.com/v1/artists/0iQDOaYEA5i9RAF0Z73iXb",
-          id: "0iQDOaYEA5i9RAF0Z73iXb",
-          name: "Angelina Jordan",
-          type: "artist",
-          uri: "spotify:artist:0iQDOaYEA5i9RAF0Z73iXb",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/2eTZer3GBKUF8AZOEqpiMj",
-        },
-        href: "https://api.spotify.com/v1/albums/2eTZer3GBKUF8AZOEqpiMj",
-        id: "2eTZer3GBKUF8AZOEqpiMj",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273789bfaea6e7da3ef84d5ddff",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02789bfaea6e7da3ef84d5ddff",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851789bfaea6e7da3ef84d5ddff",
-          width: 64,
-        },
-        ],
-        name: "Bohemian Rhapsody",
-        release_date: "2020-01-24",
-        release_date_precision: "day",
-        total_tracks: 1,
-        type: "album",
-        uri: "spotify:album:2eTZer3GBKUF8AZOEqpiMj",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/0iQDOaYEA5i9RAF0Z73iXb",
-        },
-        href: "https://api.spotify.com/v1/artists/0iQDOaYEA5i9RAF0Z73iXb",
-        id: "0iQDOaYEA5i9RAF0Z73iXb",
-        name: "Angelina Jordan",
-        type: "artist",
-        uri: "spotify:artist:0iQDOaYEA5i9RAF0Z73iXb",
-      },],
-      disc_number: 1,
-      duration_ms: 148750,
-      explicit: false,
-      external_ids: {
-        isrc: "QZFYY2065104",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/4dPKZJKJzPl4TEWLsMdohE",
-      },
-      href: "https://api.spotify.com/v1/tracks/4dPKZJKJzPl4TEWLsMdohE",
-      id: "4dPKZJKJzPl4TEWLsMdohE",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody",
-      popularity: 54,
-      preview_url: "https://p.scdn.co/mp3-preview/3bdbf49343af7b817c08e0ff900fac5fb37b8c14?cid=0beee08e00b947e0aaa2d5cc7f8ffd30",
-      track_number: 1,
-      type: "track",
-      uri: "spotify:track:4dPKZJKJzPl4TEWLsMdohE",
-    },
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-          },
-          href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-          id: "1dfeR4HaWDbWqFHLkxsg1d",
-          name: "Queen",
-          type: "artist",
-          uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/6i6folBtxKV28WX3msQ4FE",
-        },
-        href: "https://api.spotify.com/v1/albums/6i6folBtxKV28WX3msQ4FE",
-        id: "6i6folBtxKV28WX3msQ4FE",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02e8b066f70c206551210d902b",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851e8b066f70c206551210d902b",
-          width: 64,
-        },
-        ],
-        name: "Bohemian Rhapsody (The Original Soundtrack)",
-        release_date: "2018-10-19",
-        release_date_precision: "day",
-        total_tracks: 22,
-        type: "album",
-        uri: "spotify:album:6i6folBtxKV28WX3msQ4FE",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-        },
-        href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-        id: "1dfeR4HaWDbWqFHLkxsg1d",
-        name: "Queen",
-        type: "artist",
-        uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-      },],
-      disc_number: 1,
-      duration_ms: 179355,
-      explicit: false,
-      external_ids: {
-        isrc: "GBUM71029606",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/300YN8ebGB90nDuzgz0f3O",
-      },
-      href: "https://api.spotify.com/v1/tracks/300YN8ebGB90nDuzgz0f3O",
-      id: "300YN8ebGB90nDuzgz0f3O",
-      is_local: false,
-      is_playable: true,
-      name: "Killer Queen",
-      popularity: 68,
-      preview_url: null,
-      track_number: 5,
-      type: "track",
-      uri: "spotify:track:300YN8ebGB90nDuzgz0f3O",
-    },
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-          },
-          href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-          id: "1dfeR4HaWDbWqFHLkxsg1d",
-          name: "Queen",
-          type: "artist",
-          uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/6i6folBtxKV28WX3msQ4FE",
-        },
-        href: "https://api.spotify.com/v1/albums/6i6folBtxKV28WX3msQ4FE",
-        id: "6i6folBtxKV28WX3msQ4FE",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02e8b066f70c206551210d902b",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851e8b066f70c206551210d902b",
-          width: 64,
-        },
-        ],
-        name: "Bohemian Rhapsody (The Original Soundtrack)",
-        release_date: "2018-10-19",
-        release_date_precision: "day",
-        total_tracks: 22,
-        type: "album",
-        uri: "spotify:album:6i6folBtxKV28WX3msQ4FE",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-        },
-        href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-        id: "1dfeR4HaWDbWqFHLkxsg1d",
-        name: "Queen",
-        type: "artist",
-        uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-      },],
-      disc_number: 1,
-      duration_ms: 147840,
-      explicit: false,
-      external_ids: {
-        isrc: "GBUM71805979",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/7xHATAMD7ezTZGYsNAMr5R",
-      },
-      href: "https://api.spotify.com/v1/tracks/7xHATAMD7ezTZGYsNAMr5R",
-      id: "7xHATAMD7ezTZGYsNAMr5R",
-      is_local: false,
-      is_playable: true,
-      name: "Bohemian Rhapsody - Live Aid",
-      popularity: 60,
-      preview_url: null,
-      track_number: 16,
-      type: "track",
-      uri: "spotify:track:7xHATAMD7ezTZGYsNAMr5R",
-    },
-    {
-      album: {
-        album_type: "album",
-        artists: [{
-          external_urls: {
-            spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-          },
-          href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-          id: "1dfeR4HaWDbWqFHLkxsg1d",
-          name: "Queen",
-          type: "artist",
-          uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-        },],
-        external_urls: {
-          spotify: "https://open.spotify.com/album/6i6folBtxKV28WX3msQ4FE",
-        },
-        href: "https://api.spotify.com/v1/albums/6i6folBtxKV28WX3msQ4FE",
-        id: "6i6folBtxKV28WX3msQ4FE",
-        images: [{
-          height: 640,
-          url: "https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b",
-          width: 640,
-        },
-        {
-          height: 300,
-          url: "https://i.scdn.co/image/ab67616d00001e02e8b066f70c206551210d902b",
-          width: 300,
-        },
-        {
-          height: 64,
-          url: "https://i.scdn.co/image/ab67616d00004851e8b066f70c206551210d902b",
-          width: 64,
-        },
-        ],
-        name: "Bohemian Rhapsody (The Original Soundtrack)",
-        release_date: "2018-10-19",
-        release_date_precision: "day",
-        total_tracks: 22,
-        type: "album",
-        uri: "spotify:album:6i6folBtxKV28WX3msQ4FE",
-      },
-      artists: [{
-        external_urls: {
-          spotify: "https://open.spotify.com/artist/1dfeR4HaWDbWqFHLkxsg1d",
-        },
-        href: "https://api.spotify.com/v1/artists/1dfeR4HaWDbWqFHLkxsg1d",
-        id: "1dfeR4HaWDbWqFHLkxsg1d",
-        name: "Queen",
-        type: "artist",
-        uri: "spotify:artist:1dfeR4HaWDbWqFHLkxsg1d",
-      },],
-      disc_number: 1,
-      duration_ms: 223080,
-      explicit: false,
-      external_ids: {
-        isrc: "GBUM71805978",
-      },
-      external_urls: {
-        spotify: "https://open.spotify.com/track/7iAqvWLgZzXvH38lA06QZg",
-      },
-      href: "https://api.spotify.com/v1/tracks/7iAqvWLgZzXvH38lA06QZg",
-      id: "7iAqvWLgZzXvH38lA06QZg",
-      is_local: false,
-      is_playable: true,
-      name: "I Want To Break Free",
-      popularity: 69,
-      preview_url: null,
-      track_number: 13,
-      type: "track",
-      uri: "spotify:track:7iAqvWLgZzXvH38lA06QZg",
-    },
-  ];
-
-  const handleSelected = () => {
-    // setSelect(select.filter(track => track.id ?))
-    setSelect(!select);
-    // setSelect({
-    //   select: false,
-    // });
-  };
-
-  // const handleFavorite = () => {
-  //   return artists.map((track) =>
-  //     <>
-  //       <CardComponent key={track.id}
-  //         // id={queen.id}
-  //         img={track.album.images[0].url}
-  //         title={track.name}
-  //         // album={queen.album.name}
-  //         artist={track.artists[0].name}
-  //         desc={`This song was released in ` + track.album.release_date + ` which has ranked of ` + track.popularity + ` popularity`}
-  //         button={track.external_urls.spotify}
-  //         favorite={handleFavorite}
-  //       />
-  //     </>
-  //   )
-  const renderArtists = () => {
-    return artists.map((track) =>
-      <>
-        <CardComponent key={track.id}
-          // id={queen.id}
-          img={track.album.images[0].url}
-          title={track.name}
-          // album={queen.album.name}
-          artist={track.artists[0].name}
-          desc={`This song was released in ` + track.album.release_date + ` which has ranked of ` + track.popularity + ` popularity`}
-          button={track.external_urls.spotify}
-          // setIsActive={setIsActive}
-          // isActive={isActive}
-          status={() => handleElement(track.id)}
-          // status={() => handleClick(track.id)}
-          select={selectElement === track.id ? "Selected" : "Select"}
-          buttonId={track.id}
-
-        />
-      </>
-      // <div key={track.id}>
-      //   {/* {track.images.length ? <img src={track.image[0].url} alt="" /> : <div>No Image</div>} */}
-      //   {track.name}
-      //   {track.artists[0].name}
-      // </div>
-    )
   }
-
 
   return (
+    <div className="App">
+      {!token ? (
+        <a
+          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+          className="login"
+        >
+          Login
+        </a>
+      ) : (
+        <a href="#" className="login" onClick={logout}>
+          Logout
+        </a>
+      )}
 
-    <div >
-      {/* <p>{searchKey}</p> */}
+      {token ? (
+        <SearchBar
+          onChange={(e) => setSearchKey(e.target.value)}
+          onSubmit={handleSearchSong}
+        />
+      ) : (
+        <h2>Please Login first</h2>
+      )}
 
+      <div className="container">
+        {/* <div className="selected-tracks-container">
+          {renderCombinedTracks()}
+        </div> */}
+        {/* <p>{uris}</p> */}
 
-      {/* <div>{artists}</div> */}
+        <div className="selected-tracks-container">
+          {/* {renderUris()} */}
+          {selectedTracksId.length > 0 && (
+            <>
+              {/* <h6>Selected Tracks List</h6> */}
 
-
-      {/* <SpotifyLogin /> */}
-
-
-      <div className="container" id="container" >
-
-
-        {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`} className="login">Login</a>
-          : <a href="#" className="login" onClick={logout}>Logout</a>
-        }
-
-        {
-          token ?
-            <div className="form-search">
-              <form onSubmit={searchArtists}>
-                <input type="text" onChange={e => setSearchKey(e.target.value)} placeholder="Search your favorite song here" />
-                <button type={"submit"}>go</button>
-              </form>
-            </div>
-            :
-            <h2>Please Login first</h2>
-        }
-
-
-
-
-
-
-        <div className="playlist-container" id="playlist-container">
-          {/* <h1 className="sub-title">Your Selected Songs</h1> */}
-
-
-          <h1 className="sub-title">Songs on This Playlist <span><a className="callapi" onClick={handleClick} >
-            Add song
-          </a></span> </h1>
-
-
-          <div className="card-container">
-            <div id="card-api"></div>
-
-
-            {renderArtists()}
-            {/* {queenSongs.map((queen, index) =>
-            (
-              <CardComponent
-                id={queen.id}
-                img={queen.album.images[0].url}
-                title={queen.name}
-                album={queen.album.name}
-                artist={queen.artists[4]}
-                desc={`This song was released in ` + queen.album.release_date + ` which has ranked of ` + queen.popularity + ` popularity`}
-                button={queen.album.external_urls.spotify}
-              />
-            ))} */}
-
-
-
-          </div>
-          <CreatePlaylist
-          />
+              {tracks
+                .filter((item) =>
+                  selectedTracksId.includes(item)
+                )
+                .map((newTrack) => (
+                  <CardItem
+                    key={newTrack.id}
+                    title={newTrack.name}
+                    artist={newTrack.artists[0].name}
+                    img={newTrack.album.images[0].url}
+                    getClassName={getClassName(
+                      selectedTracksId.includes(newTrack.id)
+                    )}
+                    onClick={onTrackItemClick}
+                    // onClick={handleSelect}
+                    // remove={removeSelectedTrack}
+                    track={newTrack}
+                    isSelected={
+                      selectedTracksId.includes(newTrack.id)
+                        ? "Selected"
+                        : "Select"
+                    }
+                  />
+                ))}
+            </>
+          )}
         </div>
+
+        <h6>Song Tracks List</h6>
+        {tracks.map((track) => (
+          <CardItem
+            key={track.id}
+            title={track.name}
+            artist={track.artists[0].name}
+            img={track.album.images[0].url}
+            getClassName={getClassName(selectedTracksId.includes(track.id))}
+            onClick={onTrackItemClick}
+            // onClick={handleSelect}
+            track={track}
+            isSelected={selectedTracksId.includes(track.id) ? "Selected" : "Select"}
+          />
+        ))}
       </div>
-    </div >
+    </div>
   );
 }
 
-
-
 export default App;
+

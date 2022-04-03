@@ -1,17 +1,13 @@
-import React from "react";
-import "./styles.css";
-
-const SearchBarComponent = ({ searchSong, submitSong, halo }) => {
-
+const SearchBar = ({ onChange, onSubmit }) => {
   return (
-    <div className="search-bar">
-      <form onSubmit={submitSong}>
-        <input type="text" onChange={searchSong} placeholder="Search your favorite song here ..." />
-        <p>{halo}</p>
-        <button type="submit">Search</button>
+    <>
+      <form className="mb-5" onSubmit={onSubmit}>
+        <label htmlFor="search-song"></label>
+        <input onChange={onChange} type="text" id="search-song" placeholder="Search your song here" />
+        <button type={"submit"}>Search</button>
       </form>
-    </div>
+    </>
   );
-};
+}
 
-export default SearchBarComponent;
+export default SearchBar;
