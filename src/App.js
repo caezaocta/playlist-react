@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import SearchBar from "./components/searchbar";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import GetPlaylist from './components/getplaylist'
 
 function App() {
   const CLIENT_ID = "dfc1111bb28e42208f37905662121d74";
@@ -77,18 +78,25 @@ function App() {
 
   return (
     <div className="App">
-      {!token ? (
-        <a
-          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-          className="login"
-        >
-          Login
-        </a>
-      ) : (
-        <a href="#" className="login" onClick={logout}>
-          Logout
-        </a>
-      )}
+      <div className="container">
+        <div className="row">
+          {!token ? (
+            <a
+              href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+              className="login"
+            >
+              Login
+            </a>
+          ) : (
+            <a href="#" className="login" onClick={logout}>
+              Logout
+            </a>
+          )}
+        </div>
+        <div className="row">
+          <GetPlaylist />
+        </div>
+      </div>
 
       {token ? (
         <SearchBar
