@@ -35,10 +35,10 @@ const GetPlaylist = () => {
             <button onClick={handleGetPlaylists} className="btn btn-primary">Get Playlist</button>
 
             <div className="container">
-                {data.items ? data.items.map((item) =>
+                {/* {data.items ? data.items.map((item) =>
                     <h1>{item.name}</h1>
                 )
-                    : null}
+                    : null} */}
             </div>
         </>
     );

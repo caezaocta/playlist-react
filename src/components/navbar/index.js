@@ -1,43 +1,63 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./styles.css";
-import { FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import SpotifyLogin from "../login";
+import LoginButton from "../login";
+import { useState, useEffect } from 'react'
+import GetPlaylist from "../getplaylist";
 
-const Navbar = ({ login }) => {
+const Navbar = () => {
+  const CLIENT_ID = "dfc1111bb28e42208f37905662121d74";
+  const REDIRECT_URI = "http://localhost:3000";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
+
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
+
+    if (!token && hash) {
+      token = hash
+        .substring(1)
+        .split("&")
+        .find((elem) => elem.startsWith("access_token"))
+        .split("=")[1];
+
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
+    }
+    setToken(token);
+  }, []);
+
+  const logout = () => {
+    setToken("");
+    window.localStorage.removeItem("token");
+  };
+
+
+
   return (
-    <div>
-      <nav>
-        <h2>GIGIH 2.0 Playlist</h2>
-        <ul>
-          <li>
-            {login}
+    <>
+      <div className="container">
+        <ul class="nav justify-content-end py-3">
+          <li className="nav-item mx-3">
+            <GetPlaylist />
           </li>
-          <li>
-            <a href="#" id="logo1">
-              <i>
-                <FaGithub color="white" size="2em" />
-              </i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i>
-                <FaLinkedinIn color="white" size="2em" />
-              </i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i>
-                <FaInstagram color="white" size="2em" />
-              </i>
-            </a>
+          <li class="nav-item">
+            {!token ?
+              <LoginButton
+                href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+                // href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+                header={'Login'}
+              />
+              :
+              <LoginButton
+                onClick={logout}
+                header="Logout"
+              />
+            }
           </li>
         </ul>
-      </nav>
-    </div>
-  );
-};
+      </div>
+    </>);
+}
 
 export default Navbar;
