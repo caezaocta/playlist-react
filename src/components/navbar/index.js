@@ -41,7 +41,7 @@ const Navbar = () => {
           <li className="nav-item mx-3">
             <GetPlaylist />
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             {!token ?
               <LoginButton
                 href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}

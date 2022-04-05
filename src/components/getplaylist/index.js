@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import Playlist from '../playlist'
 
 
 const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/me/playlists"
@@ -22,12 +23,12 @@ const GetPlaylist = () => {
                     Authorization: `Bearer ${token}`,
                 },
             }).then(response => {
-                setData(response.data)
+                setData(response.data.items)
             }).catch((error) => {
                 console.log(error)
             });
 
-        console.log(data)
+        console.log(data.items)
     }
 
     return (
@@ -35,10 +36,16 @@ const GetPlaylist = () => {
             <button onClick={handleGetPlaylists} className="btn btn-primary">Get Playlist</button>
 
             <div className="container">
-                {/* {data.items ? data.items.map((item) =>
-                    <h1>{item.name}</h1>
+
+                {/* {data.map((item) =>
+                    <Playlist
+                        key={item.id}
+                        title={item.name}
+                        desc={item.desc}
+                    />
                 )
-                    : null} */}
+                } */}
+
             </div>
         </>
     );

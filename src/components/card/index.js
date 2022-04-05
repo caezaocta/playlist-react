@@ -6,7 +6,7 @@ const CardItem = ({ track, id, onClick, getClassName, img, artist, title, isSele
       <div className={getClassName}
         style={{ width: "18rem", height: "100px" }}
         // onClick={() => onClick(track)}
-        onClick={() => onClick(track.id)}
+        onClick={() => onClick(track.uri)}
 
       // onClick={onClick}
       >
