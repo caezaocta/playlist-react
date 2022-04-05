@@ -14,7 +14,6 @@ function App() {
   const [tracks, setTracks] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [selectedTracksId, setSelectedTracksId] = useState([]);
-  const [uris, setUris] = useState([]);
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
   const [playlists, setPlaylists] = useState([])
@@ -42,8 +41,7 @@ function App() {
   const handleCreatePlaylist = async e => {
     e.preventDefault();
     const uris = selectedTracksId.map(item => item.uri);
-    // console.log(uris)
-    // console.log(token)
+    console.log(uris);
     axios
       .get("https://api.spotify.com/v1/me", {
         headers: {
@@ -51,16 +49,13 @@ function App() {
         },
       })
       .then(function (response) {
-        // console.log(title)
-        // console.log(desc)
-        // console.log(response.data.id)
         axios
           .post(
             `https://api.spotify.com/v1/users/${response.data.id}/playlists`,
             {
               "name": title,
               "description": desc,
-              "public": true,
+              "public": false,
             },
             {
               headers: {
@@ -69,9 +64,12 @@ function App() {
             }
           )
           .then(function (response) {
+
             axios.post(
               `https://api.spotify.com/v1/playlists/${response.data.id}/tracks`,
-              { uris: uris },
+              {
+                uris: selectedTracksId
+              },
               {
                 headers: {
                   Authorization: `Bearer ${token}`
@@ -79,8 +77,8 @@ function App() {
               }
             );
           });
-        alert('New Playlist added')
       });
+    alert('New Playlist added')
   };
 
   function getClassName(selected) {
@@ -100,7 +98,7 @@ function App() {
     );
     console.log(selectedTracksId)
   }
-  // console.log(selectedTracksId)
+
 
   const handleTitleInput = (val) => {
     setTitle(val.target.value)

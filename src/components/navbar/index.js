@@ -1,5 +1,5 @@
 import LoginButton from "../login";
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 import GetPlaylist from "../getplaylist";
 
 const Navbar = () => {
@@ -7,6 +7,7 @@ const Navbar = () => {
   const REDIRECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
+  const SCOPES = 'playlist-modify-public playlist-read-private playlist-modify-private';
 
   const [token, setToken] = useState("");
 
@@ -32,32 +33,28 @@ const Navbar = () => {
     window.localStorage.removeItem("token");
   };
 
-
-
   return (
     <>
       <div className="container">
-        <ul class="nav justify-content-end py-3">
+        <ul className="nav justify-content-end py-3">
           <li className="nav-item mx-3">
             <GetPlaylist />
           </li>
           <li className="nav-item">
-            {!token ?
+            {!token ? (
               <LoginButton
-                href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+                href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES}&response_type=${RESPONSE_TYPE}`}
                 // href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-                header={'Login'}
+                header={"Login"}
               />
-              :
-              <LoginButton
-                onClick={logout}
-                header="Logout"
-              />
-            }
+            ) : (
+              <LoginButton onClick={logout} header="Logout" />
+            )}
           </li>
         </ul>
       </div>
-    </>);
-}
+    </>
+  );
+};
 
 export default Navbar;

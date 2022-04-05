@@ -22,7 +22,7 @@ const CreatePlaylist = ({ onSubmit, titleInput, descInput }) => {
       <form className="mb-5" onSubmit={onSubmit}>
         <div className="form-group mb-3">
           <h4 className="mb-5">Create Playlist</h4>
-          <label for="playlist-title">Title</label>
+          <label htmlFor="playlist-title">Title</label>
           <input
             type="text"
             onChange={titleInput}
@@ -30,11 +30,11 @@ const CreatePlaylist = ({ onSubmit, titleInput, descInput }) => {
             id="playlist-title"
             aria-describedby="emailHelp"
             placeholder="Enter your playlist title"
-            minlength="10"
+            minLength="10"
           />
         </div>
         <div className="form-group mb-3">
-          <label for="playlist-desc">Description</label>
+          <label htmlFor="playlist-desc">Description</label>
           <input
             type="text"
             onChange={descInput}
