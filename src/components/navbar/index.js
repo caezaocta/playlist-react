@@ -41,19 +41,25 @@ const Navbar = () => {
     dispatch(login(""))
   };
 
+  const redirectCreatePlaylist = () => {
+
+  }
+
   return (
     <>
       <div className="container">
         <ul className="nav justify-content-end py-3">
-          <li className="nav-item mx-3">
+          {/* <li className="nav-item mx-3">
             <GetPlaylist />
-          </li>
+          </li> */}
           <li className="nav-item">
             {!token ? (
               <LoginButton
                 href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES}&response_type=${RESPONSE_TYPE}`}
+                // onClick={() => history.push("/create-playlist")}
                 // href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
                 header={"Login"}
+
               />
             ) : (
               <LoginButton onClick={logout} header="Logout" />

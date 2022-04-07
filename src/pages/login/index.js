@@ -11,7 +11,7 @@ const SpotifyLogin = () => {
         <>
             <NavComponent
             />
-            
+
             <LoginButton />
 
 
