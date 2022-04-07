@@ -6,11 +6,13 @@ import SearchBar from "./components/searchbar";
 import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "./components/navbar";
-import PlaylistContainer from "./components/playlist-container";
-import Playlist from "./components/playlist";
 import CreatePlaylist from "./components/createplaylist";
+import { useSelector } from 'react-redux';
 
 function App() {
+  const token = useSelector(state => state.token.value)
+  console.log(token);
+
   const [tracks, setTracks] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [selectedTracksId, setSelectedTracksId] = useState([]);
@@ -18,19 +20,29 @@ function App() {
   const [desc, setDesc] = useState(null);
   const [playlists, setPlaylists] = useState([])
 
-  let token = window.localStorage.getItem("token");
+  // let token = window.localStorage.getItem("token");
+  const TokenHeader = () => {
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  }
+
 
   const handleSearchSong = async (e) => {
     e.preventDefault();
-    const { data } = await axios.get("https://api.spotify.com/v1/search", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        q: searchKey,
-        type: "track",
-      },
-    });
+    const { data } = await axios.get(`https://api.spotify.com/v1/search?q=${searchKey}&type=track`, TokenHeader())
+    //   {
+    //     // headers: {
+    //     //   Authorization: `Bearer ${token}`,
+    //     // },
+    //     // params: {
+    //     //   q: searchKey,
+    //     //   type: "track",
+    //     // },
+    //   },
+    // );
     const newData = data.tracks.items.map((item) => ({
       ...item,
       selected: false,
@@ -43,11 +55,7 @@ function App() {
     const uris = selectedTracksId.map(item => item.uri);
     console.log(uris);
     axios
-      .get("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get("https://api.spotify.com/v1/me", TokenHeader())
       .then(function (response) {
         axios
           .post(
@@ -57,11 +65,12 @@ function App() {
               "description": desc,
               "public": false,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
-              },
-            }
+            TokenHeader(),
+            // {
+            //   headers: {
+            //     Authorization: `Bearer ${token}`
+            //   },
+            // }
           )
           .then(function (response) {
 
@@ -70,11 +79,12 @@ function App() {
               {
                 uris: selectedTracksId
               },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`
-                },
-              }
+              TokenHeader(),
+              // {
+              //   headers: {
+              //     Authorization: `Bearer ${token}`
+              //   },
+              // }
             );
           });
       });
