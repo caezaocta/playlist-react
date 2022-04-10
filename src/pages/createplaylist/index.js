@@ -5,11 +5,12 @@ import Navbar from "../../components/navbar";
 import SearchBar from "../../components/searchbar";
 import CardItem from "../../components/card";
 import CreatePlaylist from "../../components/createplaylist";
+import { Switch, Route } from "react-router-dom";
 
 
 const PlaylistPage = () => {
     const token = useSelector(state => state.token.value)
-    console.log(token);
+    // console.log(token);
 
     const [tracks, setTracks] = useState([]);
     const [searchKey, setSearchKey] = useState("");
@@ -106,6 +107,8 @@ const PlaylistPage = () => {
     }
 
     return (<>
+
+
         <Navbar />
         <div className="row d-flex justify-content-center">
             <div className="col-4"></div>{" "}
@@ -142,60 +145,62 @@ const PlaylistPage = () => {
                                 onChange={(e) => setSearchKey(e.target.value)}
                                 onSubmit={handleSearchSong}
                             />{" "}
+
+                            <div className="selected-tracks-container">
+                                {selectedTracksId.length > 0 && (
+                                    <>
+                                        {tracks
+                                            .filter((item) => selectedTracksId.includes(item))
+                                            .map((newTrack) => (
+                                                <CardItem
+                                                    key={newTrack.uri}
+                                                    title={newTrack.name}
+                                                    artist={newTrack.artists[0].name}
+                                                    img={newTrack.album.images[0].url}
+                                                    getClassName={getClassName(
+                                                        selectedTracksId.includes(newTrack.uri)
+                                                    )}
+                                                    onClick={onTrackItemClick}
+                                                    // onClick={handleSelect}
+                                                    // remove={removeSelectedTrack}
+                                                    track={newTrack}
+                                                    isSelected={
+                                                        selectedTracksId.includes(newTrack.uri)
+                                                            ? "Selected"
+                                                            : "Select"
+                                                    }
+                                                />
+                                            ))}{" "}
+                                    </>
+                                )}{" "}
+                            </div>
+
+                            <div className="row d-flex justify-content-center">
+                                {" "}
+                                {tracks.map((track) => (
+                                    <CardItem
+                                        key={track.uri}
+                                        title={track.name}
+                                        artist={track.artists[0].name}
+                                        img={track.album.images[0].url}
+                                        getClassName={getClassName(selectedTracksId.includes(track.uri))}
+                                        onClick={onTrackItemClick}
+                                        // onClick={handleSelect}
+                                        track={track}
+                                        isSelected={
+                                            selectedTracksId.includes(track.uri) ? "Selected" : "Select"
+                                        }
+                                    />
+                                ))}{" "}
+                            </div>{" "}
                         </>
                     ) : (
-                        <h2> Please Login first </h2>
+                        <h2>You are not Logged In</h2>
                     )}{" "}
                 </div>{" "}
             </div>
         </div>
-        <div className="selected-tracks-container">
-            {selectedTracksId.length > 0 && (
-                <>
-                    {tracks
-                        .filter((item) => selectedTracksId.includes(item))
-                        .map((newTrack) => (
-                            <CardItem
-                                key={newTrack.uri}
-                                title={newTrack.name}
-                                artist={newTrack.artists[0].name}
-                                img={newTrack.album.images[0].url}
-                                getClassName={getClassName(
-                                    selectedTracksId.includes(newTrack.uri)
-                                )}
-                                onClick={onTrackItemClick}
-                                // onClick={handleSelect}
-                                // remove={removeSelectedTrack}
-                                track={newTrack}
-                                isSelected={
-                                    selectedTracksId.includes(newTrack.uri)
-                                        ? "Selected"
-                                        : "Select"
-                                }
-                            />
-                        ))}{" "}
-                </>
-            )}{" "}
-        </div>
 
-        <div className="row d-flex justify-content-center">
-            {" "}
-            {tracks.map((track) => (
-                <CardItem
-                    key={track.uri}
-                    title={track.name}
-                    artist={track.artists[0].name}
-                    img={track.album.images[0].url}
-                    getClassName={getClassName(selectedTracksId.includes(track.uri))}
-                    onClick={onTrackItemClick}
-                    // onClick={handleSelect}
-                    track={track}
-                    isSelected={
-                        selectedTracksId.includes(track.uri) ? "Selected" : "Select"
-                    }
-                />
-            ))}{" "}
-        </div>{" "}
     </>
     );
 }

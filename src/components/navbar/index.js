@@ -1,8 +1,8 @@
 import LoginButton from "../login";
 import { useState, useEffect } from "react";
-import GetPlaylist from "../getplaylist";
 import { login } from "../../redux/token-slice.js"
 import { useDispatch } from "react-redux";
+import { Switch, Link } from "react-router-dom";
 
 const Navbar = () => {
   const CLIENT_ID = "dfc1111bb28e42208f37905662121d74";
@@ -41,32 +41,34 @@ const Navbar = () => {
     dispatch(login(""))
   };
 
-  const redirectCreatePlaylist = () => {
-
-  }
-
   return (
     <>
+
       <div className="container">
         <ul className="nav justify-content-end py-3">
-          {/* <li className="nav-item mx-3">
-            <GetPlaylist />
-          </li> */}
           <li className="nav-item">
-            {!token ? (
-              <LoginButton
-                href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES}&response_type=${RESPONSE_TYPE}`}
-                // onClick={() => history.push("/create-playlist")}
-                // href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-                header={"Login"}
 
-              />
-            ) : (
-              <LoginButton onClick={logout} header="Logout" />
-            )}
+            {!token ?
+              (
+
+                <LoginButton
+                  href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES}&response_type=${RESPONSE_TYPE}`}
+                  // onClick={() => history.push("/create-playlist")}
+                  // href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+                  header={"Login"}
+                />
+              )
+              :
+              (
+                <button className="btn btn-outline-warning" onClick={logout}>
+                  Logout
+                </button>
+
+              )}
           </li>
         </ul>
       </div>
+
     </>
   );
 };
