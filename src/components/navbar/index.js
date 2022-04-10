@@ -6,7 +6,7 @@ import { Switch, Link } from "react-router-dom";
 
 const Navbar = () => {
   const CLIENT_ID = "dfc1111bb28e42208f37905662121d74";
-  const REDIRECT_URI = "http://localhost:3000";
+  const REDIRECT_URI = "http://localhost:3000/home";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
   const SCOPES = 'playlist-modify-public playlist-read-private playlist-modify-private';
@@ -17,7 +17,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const hash = window.location.hash;
-    // let token = window.localStorage.getItem("token");
+    let token = window.localStorage.getItem("token");
 
     if (!token && hash) {
       setToken(
@@ -29,15 +29,15 @@ const Navbar = () => {
       );
 
       window.location.hash = "";
-      // window.localStorage.setItem("token", token);
+      window.localStorage.setItem("token", token);
     }
-    // setToken(token);
+    setToken(token);
     dispatch(login(token))
   }, [dispatch, token]);
 
   const logout = () => {
     setToken("");
-    // window.localStorage.removeItem("token");
+    window.localStorage.removeItem("token");
     dispatch(login(""))
   };
 

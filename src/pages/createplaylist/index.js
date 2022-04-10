@@ -5,12 +5,12 @@ import Navbar from "../../components/navbar";
 import SearchBar from "../../components/searchbar";
 import CardItem from "../../components/card";
 import CreatePlaylist from "../../components/createplaylist";
-import { Switch, Route } from "react-router-dom";
+
 
 
 const PlaylistPage = () => {
     const token = useSelector(state => state.token.value)
-    // console.log(token);
+    console.log(token);
 
     const [tracks, setTracks] = useState([]);
     const [searchKey, setSearchKey] = useState("");
