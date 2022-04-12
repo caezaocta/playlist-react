@@ -44,3 +44,12 @@ body {
     padding: 0px;
     margin-bottom: 0px;
 }
+
+.custom-container {
+    display: grid;
+    background-color: grey;
+    width: 100vw;
+    margin: auto;
+    grid-template-columns: 1fr;
+    align-items: center;
+}

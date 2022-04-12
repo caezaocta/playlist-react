@@ -5,6 +5,7 @@ import Navbar from "../../components/navbar";
 import SearchBar from "../../components/searchbar";
 import CardItem from "../../components/card";
 import CreatePlaylist from "../../components/createplaylist";
+import GridSystem from "../../components/gridsystem";
 
 
 
@@ -67,11 +68,6 @@ const PlaylistPage = () => {
                                 uris: selectedTracksId
                             },
                             TokenHeader(),
-                            // {
-                            //   headers: {
-                            //     Authorization: `Bearer ${token}`
-                            //   },
-                            // }
                         );
                     });
             });
@@ -106,45 +102,45 @@ const PlaylistPage = () => {
         setPlaylists(false)
     }
 
-    return (<>
-
-
-        <Navbar />
-        <div className="row d-flex justify-content-center">
-            <div className="col-4"></div>{" "}
-        </div>
-        <div className="row d-flex justify-content-center mb-5">
-            <div className="col-4">
-                <>
-                    <div className="row d-flex justify-content-center">
-                        <div className="col">
-                        </div>
-                    </div>
-
-                    <div className="row d-flex justify-content-center">
-                        <div className="col">
-                            <CreatePlaylist
-                                titleInput={handleTitleInput}
-                                descInput={handleDescInput}
-                                onSubmit={handleCreatePlaylist}
-                            />
-                        </div>
-                    </div>
-                </>
-
-            </div>{" "}
-        </div>
-        <div className="container">
-            <div className="row"></div>{" "}
+    return (
+        <>
+            <Navbar />
             <div className="row d-flex justify-content-center">
+                <div className="col-4"></div>{" "}
+            </div>
+            <div className="row d-flex justify-content-center mb-5">
                 <div className="col-4">
+                    <>
+                        <div className="row d-flex justify-content-center">
+                            <div className="col">
+                            </div>
+                        </div>
+
+                        <div className="row d-flex justify-content-center">
+                            <div className="col">
+                                <CreatePlaylist
+                                    titleInput={handleTitleInput}
+                                    descInput={handleDescInput}
+                                    onSubmit={handleCreatePlaylist}
+                                />
+                            </div>
+                        </div>
+                    </>
+
+                </div>{" "}
+            </div>
+            <div className="container">
+                <div className="row d-flex justify-content-center">
+
                     {" "}
                     {token ? (
                         <>
-                            <SearchBar
-                                onChange={(e) => setSearchKey(e.target.value)}
-                                onSubmit={handleSearchSong}
-                            />{" "}
+                            <div className="col-4">
+                                <SearchBar
+                                    onChange={(e) => setSearchKey(e.target.value)}
+                                    onSubmit={handleSearchSong}
+                                />{" "}
+                            </div>{" "}
 
                             <div className="selected-tracks-container">
                                 {selectedTracksId.length > 0 && (
@@ -174,34 +170,45 @@ const PlaylistPage = () => {
                                     </>
                                 )}{" "}
                             </div>
+                            <GridSystem colCount={4} md={6}>
+                                {
+                                    tracks.length > 0 ?
+                                        tracks.map((track) => (
+                                            <CardItem
+                                                key={track.uri}
+                                                title={track.name}
+                                                artist={track.artists[0].name}
+                                                img={track.album.images[0].url}
+                                                getClassName={getClassName(selectedTracksId.includes(track.uri))}
+                                                onClick={onTrackItemClick}
+                                                // onClick={handleSelect}
+                                                track={track}
+                                                isSelected={
+                                                    selectedTracksId.includes(track.uri) ? "Selected" : "Select"
+                                                }
+                                            />
+                                        ))
+                                        :
+                                        <p>No song</p>
+                                }
+                            </GridSystem>
+                            <div className="custom-container">
+                                <div className="grid-item">
 
-                            <div className="row d-flex justify-content-center">
-                                {" "}
-                                {tracks.map((track) => (
-                                    <CardItem
-                                        key={track.uri}
-                                        title={track.name}
-                                        artist={track.artists[0].name}
-                                        img={track.album.images[0].url}
-                                        getClassName={getClassName(selectedTracksId.includes(track.uri))}
-                                        onClick={onTrackItemClick}
-                                        // onClick={handleSelect}
-                                        track={track}
-                                        isSelected={
-                                            selectedTracksId.includes(track.uri) ? "Selected" : "Select"
-                                        }
-                                    />
-                                ))}{" "}
-                            </div>{" "}
+                                    {
+                                    }
+                                    { }{" "}
+                                </div>{" "}
+                            </div>
                         </>
                     ) : (
                         <h2>You are not Logged In</h2>
                     )}{" "}
-                </div>{" "}
-            </div>
-        </div>
 
-    </>
+                </div>
+            </div>
+
+        </>
     );
 }
 

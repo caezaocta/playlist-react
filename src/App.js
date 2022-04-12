@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import PlaylistPage from "../src/pages/createplaylist";
+// import PlaylistPage from "../src/pages/createplaylist";
 import {
   BrowserRouter as Router,
   Route,
@@ -9,28 +9,26 @@ import {
   Switch
 } from "react-router-dom";
 import { useSelector } from "react-redux";
-import WelcomePage from "../src/pages/welcomepage";
-import { Provider } from "react-redux";
-import store from '../src/redux/store'
+// import WelcomePage from "../src/pages/welcomepage";
+// import { Provider } from "react-redux";
+// import store from '../src/redux/store'
+import Routes from '../src/pages/routes'
+// import store from '../src/redux/store'
+import PlaylistPage from '../src/pages/createplaylist'
 
 function App() {
   const token = useSelector((state) => state.token.value);
   console.log("halo appjs" + token)
+
   return (
     <div className="App">
-      <Router>
-        <Switch>
+      <PlaylistPage />
+      {/* <Router>
+        <Routes />
+      </Router> */}
+      {/* <Switch>
           <Route exact path="/">
             <Redirect to="/home" />
-          </Route>
-
-          <Route exact path="/home">
-            {token ?
-              <Redirect to="/create-playlist" >
-              </Redirect>
-              :
-              <WelcomePage />
-            }
           </Route>
 
           <Route exact path="/home">
@@ -45,8 +43,7 @@ function App() {
 
 
           <Redirect from="*" to="/home" />
-        </Switch>
-      </Router>
+        </Switch> */}
     </div>
   );
 }

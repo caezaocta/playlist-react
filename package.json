@@ -12,7 +12,7 @@
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
     "react": "^17.0.2",
-    "react-bootstrap": "^2.2.2",
+    "react-bootstrap": "^2.2.3",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.8",
@@ -46,6 +46,8 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.13.0"
+    "eslint": "^8.13.0",
+    "eslint-plugin-disable": "^2.0.3",
+    "eslint-plugin-react": "^7.29.4"
   }
 }
