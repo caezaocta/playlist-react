@@ -1,9 +1,11 @@
+import { Button } from "@mui/material"
+
 const LoginButton = ({ header, href }) => {
     return (
         <>
-            <a href={href} className="btn btn-outline-success">
+            <Button href={href} className="btn btn-outline-success">
                 {header}
-            </a>
+            </Button>
         </>
     );
 };

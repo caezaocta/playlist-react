@@ -5,10 +5,10 @@ const CardItem = ({ track, id, onClick, getClassName, img, artist, title, isSele
 
     <div className={getClassName}
       style={{ width: "18rem", height: "100px" }}
-      // onClick={() => onClick(track)}
+
       onClick={() => onClick(track.uri)}
 
-    // onClick={onClick}
+
     >
       <div className="row d-flex justify-content-between">
         <div className="col-4">
@@ -19,8 +19,6 @@ const CardItem = ({ track, id, onClick, getClassName, img, artist, title, isSele
           <h3 className="song-title">{title}</h3>
           <h6 className="song-artist">{artist}</h6>
           <h6 className="song-artist btn btn-card btn-outline-success">{isSelected}</h6>
-          {/* <h6 className="song-artist btn btn-outline-danger" onClick={remove}>Remove</h6> */}
-
         </div>
       </div>
 

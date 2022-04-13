@@ -1,29 +1,14 @@
 import React, { useState } from "react";
+import { Button, TextField } from "@mui/material"
 
 const CreatePlaylist = ({ onSubmit, titleInput, descInput }) => {
-  // const [title, setTitle] = useState(null);
-  // const [desc, setDesc] = useState(null);
-  // const [print, setPrint] = useState(false);
-
-  // function getTitle(val) {
-  //   setTitle(val.target.value);
-  //   setPrint(false);
-  //   console.warn(val.target.value);
-  // }
-
-  // function getDesc(val) {
-  //   setDesc(val.target.value);
-  //   setPrint(false);
-  //   console.warn(val.target.value);
-  // }
-
   return (
     <>
       <form className="mb-5" onSubmit={onSubmit}>
         <div className="form-group mb-3">
           <h4 className="mb-5">Create Playlist</h4>
           <label htmlFor="playlist-title">Title</label>
-          <input
+          <TextField variant="standard"
             type="text"
             onChange={titleInput}
             className="form-control custom-range"
@@ -35,7 +20,7 @@ const CreatePlaylist = ({ onSubmit, titleInput, descInput }) => {
         </div>
         <div className="form-group mb-3">
           <label htmlFor="playlist-desc">Description</label>
-          <input
+          <TextField variant="standard"
             type="text"
             onChange={descInput}
             className="form-control"
@@ -43,9 +28,9 @@ const CreatePlaylist = ({ onSubmit, titleInput, descInput }) => {
             placeholder="Enter your playlist description"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <Button type="submit" className="btn btn-primary">
           Submit
-        </button>
+        </Button>
       </form>
     </>
   );

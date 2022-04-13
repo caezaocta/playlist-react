@@ -6,6 +6,7 @@ import SearchBar from "../../components/searchbar";
 import CardItem from "../../components/card";
 import CreatePlaylist from "../../components/createplaylist";
 import GridSystem from "../../components/gridsystem";
+import { Button } from "@mui/material"
 
 
 
@@ -54,11 +55,6 @@ const PlaylistPage = () => {
                             "public": false,
                         },
                         TokenHeader(),
-                        // {
-                        //   headers: {
-                        //     Authorization: `Bearer ${token}`
-                        //   },
-                        // }
                     )
                     .then(function (response) {
 
@@ -157,8 +153,6 @@ const PlaylistPage = () => {
                                                         selectedTracksId.includes(newTrack.uri)
                                                     )}
                                                     onClick={onTrackItemClick}
-                                                    // onClick={handleSelect}
-                                                    // remove={removeSelectedTrack}
                                                     track={newTrack}
                                                     isSelected={
                                                         selectedTracksId.includes(newTrack.uri)
@@ -181,7 +175,7 @@ const PlaylistPage = () => {
                                                 img={track.album.images[0].url}
                                                 getClassName={getClassName(selectedTracksId.includes(track.uri))}
                                                 onClick={onTrackItemClick}
-                                                // onClick={handleSelect}
+
                                                 track={track}
                                                 isSelected={
                                                     selectedTracksId.includes(track.uri) ? "Selected" : "Select"
