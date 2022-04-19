@@ -4,8 +4,8 @@ import { login } from "../../redux/token-slice.js";
 import { useDispatch } from "react-redux";
 
 const Navbar: FC = () => {
-  const CLIENT_ID = "dfc1111bb28e42208f37905662121d74";
-  const REDIRECT_URI = "http://localhost:3000";
+  const CLIENT_ID = "b93052aaabb6487f931e67437afa174e";
+  const REDIRECT_URI = "http://localhost:3000/home";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
   const SCOPES =

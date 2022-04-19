@@ -6,23 +6,23 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Switch
+  Switch,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 // import WelcomePage from "../src/pages/welcomepage";
 // import { Provider } from "react-redux";
 // import store from '../src/redux/store'
-import Routes from '../src/pages/routes'
+import Routes from "./pages/routes";
 // import store from '../src/redux/store'
-import PlaylistPage from '../src/pages/createplaylist'
+import PlaylistPage from "./pages/createplaylist";
+import RoutingPage from "../src/pages/routes";
 
 function App() {
-  const token = useSelector((state) => state.token.value);
-  console.log("halo appjs" + token)
-
   return (
     <div className="App">
-      <PlaylistPage />
+      <Router>
+        <RoutingPage></RoutingPage>
+      </Router>
       {/* <Router>
         <Routes />
       </Router> */}

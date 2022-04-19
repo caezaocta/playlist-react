@@ -1,31 +1,51 @@
 import React, { useState } from "react";
-import { Button, TextField } from "@mui/material"
+import { Button, TextField } from "@mui/material";
 
-const CreatePlaylist = ({ onSubmit, titleInput, descInput }) => {
+interface CreatePlaylistProps {
+  handleSubmit(e: React.FormEvent<HTMLFormElement>): void;
+  handleChange(e: React.ChangeEvent<HTMLInputElement>): void;
+  playlist: {
+    title: string;
+    description: string;
+  };
+}
+
+const CreatePlaylist = ({
+  handleSubmit,
+  handleChange,
+  playlist,
+}: CreatePlaylistProps) => {
   return (
     <>
-      <form className="mb-5" onSubmit={onSubmit}>
+      <form className="mb-5" onSubmit={handleSubmit}>
         <div className="form-group mb-3">
           <h4 className="mb-5">Create Playlist</h4>
           <label htmlFor="playlist-title">Title</label>
-          <TextField variant="standard"
+          <input
+            // variant="standard"
             type="text"
-            onChange={titleInput}
+            onChange={handleChange}
             className="form-control custom-range"
             id="playlist-title"
+            name="title"
             aria-describedby="emailHelp"
             placeholder="Enter your playlist title"
-            minLength="10"
+            value={playlist.title}
+            minLength={10}
+            // minLength="10"
           />
         </div>
         <div className="form-group mb-3">
           <label htmlFor="playlist-desc">Description</label>
-          <TextField variant="standard"
+          <input
+            // variant="standard"
             type="text"
-            onChange={descInput}
+            name="description"
+            onChange={handleChange}
             className="form-control"
             id="playlist-desc"
             placeholder="Enter your playlist description"
+            value={playlist.description}
           />
         </div>
         <Button type="submit" className="btn btn-primary">
